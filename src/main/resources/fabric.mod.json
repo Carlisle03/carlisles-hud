@@ -27,10 +27,7 @@
 	},
 	"mixins": [
 		"carlisles-hud.mixins.json",
-		{
-			"config": "carlisles-hud.client.mixins.json",
-			"environment": "client"
-		}
+		"carlisles-hud.client.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.19.5",

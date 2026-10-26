@@ -25,7 +25,7 @@ public class ConfigScreen {
                 .setTooltip(Component.translatable("option.carlisleshud.hudPos.tooltip"))
                 .build());
 
-        general.addEntry(entryBuilder.startBooleanToggle(Component.translatable("option.carlisleshud.isIconEnabled"), CarlislesHudClient.config.isWAILAEnabled)
+        general.addEntry(entryBuilder.startBooleanToggle(Component.translatable("option.carlisleshud.isWAILAEnabled"), CarlislesHudClient.config.isWAILAEnabled)
                         .setDefaultValue(true)
                         .setSaveConsumer(newValue -> CarlislesHudClient.config.isWAILAEnabled = newValue)
                 .build());

@@ -3,6 +3,6 @@
   "category.carlisleshud.general": "General",
   "option.carlisleshud.hudPos": "HUD Position",
   "option.carlisleshud.hudPos.tooltip": "1=top-left, 2=top-right",
-  "option.carlisleshud.isIconEnabled": "Enable Icon",
+  "option.carlisleshud.isWAILAEnabled": "Enable WAILA",
   "option.carlisleshud.is12HourFormat": "Change time format to 12-hour format"
 }
