@@ -54,9 +54,7 @@ public class CarlislesHudClient implements ClientModInitializer {
 			// hud background
 			int tx1 = 10;
 			int ty1 = 10;
-			if (1 == config.hudPos) {
-				tx1 = 10;
-			} else if (2 == config.hudPos) {
+			if (2 == config.hudPos) {
 				tx1 = client.getWindow().getGuiScaledWidth() - 150;
 			}
 
