@@ -187,7 +187,7 @@ public class CarlislesHudClient implements ClientModInitializer {
 						}
 					} else {
 						String itemString = offHand.getCount() + "/" + offHand.getMaxStackSize();
-						graphics.text(font, itemString, dtX, dtY + 80, colors.white);
+						graphics.text(font, itemString, dtX, dtY + 100, colors.white);
 					}
 				}
 			}
