@@ -4,5 +4,6 @@
   "option.carlisleshud.hudPos": "HUD Position",
   "option.carlisleshud.hudPos.tooltip": "1=top-left, 2=top-right",
   "option.carlisleshud.isWAILAEnabled": "Enable WAILA",
-  "option.carlisleshud.is12HourFormat": "Change time format to 12-hour format"
+  "option.carlisleshud.is12HourFormat": "Change time format to 12-hour format",
+  "option.carlisleshud.isDurabilityHudEnabled": "Enable Durability HUD"
 }

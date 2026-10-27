@@ -38,6 +38,7 @@ public class CarlislesHudClient implements ClientModInitializer {
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
 	public static ConfigDefaults config = new ConfigDefaults();
+	public static ColorHex colors = new ColorHex();
 
 	@Override
 	public void onInitializeClient() {
@@ -74,33 +75,123 @@ public class CarlislesHudClient implements ClientModInitializer {
 			} else {
 				sprintStatus = Component.literal("Sprinting");
 			}
+			double avgMspt = Math.round(MsptCalculator.getMspt());
 			if (client.getSingleplayerServer() != null) {
-				pingCounter = Component.literal("Ping: N/A (singleplayer)");
+				pingCounter = Component.literal("MSPT: " + String.valueOf(avgMspt));
 			}
 
-			graphics.text(font, minecraftVersion, tx1 + 10, ty1 + 10, 0xFFFFFFFF);
-			graphics.text(font, fpsCounter, tx1 + 10, ty1 + 20, 0xFFFFFFFF);
-			graphics.text(font, pingCounter, tx1 + 10, ty1 + 30, 0xFFFFFFFF);
-			graphics.text(font, coordinates, tx1 + 10, ty1 + 40, 0xFFFFFFFF);
-			graphics.text(font, sprintStatus, tx1 + 10, ty1 + 50, 0xFFFFFFFF);
-			graphics.text(font, getTime(), tx1 + 10, ty1 + 60, 0xFFFFFFFF);
+			graphics.text(font, minecraftVersion, tx1 + 10, ty1 + 10, colors.white);
+			graphics.text(font, fpsCounter, tx1 + 10, ty1 + 20, colors.white);
+			if (avgMspt <= 50) {
+				graphics.text(font, pingCounter, tx1 + 10, ty1 + 30, colors.green);
+			} else if (avgMspt >= 50) {
+				graphics.text(font, pingCounter, tx1 + 10, ty1 + 30, colors.red);
+			} else if (client.isMultiplayerServer()) {
+				graphics.text(font, pingCounter, tx1 + 10, ty1 + 30, colors.white);
+			}
+			graphics.text(font, coordinates, tx1 + 10, ty1 + 40, colors.white);
+			graphics.text(font, sprintStatus, tx1 + 10, ty1 + 50, colors.white);
+			graphics.text(font, getTime(), tx1 + 10, ty1 + 60, colors.white);
 
 			// waila
 			HitResult hit = client.hitResult;
 			Component block = Component.literal("");
-			ItemStack item = ItemStack.EMPTY;
+			ItemStack fakeItem = ItemStack.EMPTY;
 			if (hit != null && hit.getType() != HitResult.Type.ENTITY) {
 				BlockHitResult blockHit = (BlockHitResult) hit;
 				BlockPos pos = blockHit.getBlockPos();
 				BlockState blockState = client.level.getBlockState(pos);
 				block = blockState.getBlock().getName();
-				item = blockState.getBlock().asItem().getDefaultInstance();
+				fakeItem = blockState.getBlock().asItem().getDefaultInstance();
 			}
-			int bx = client.getWindow().getGuiScaledWidth() / 2;
-			int by = 10;
-			if (config.isWAILAEnabled){
-				graphics.text(font, block, bx, by + 10, 0xFFFFFFFF);
-				graphics.fakeItem(item, bx - 15, by);
+			int bx = client.getWindow().getGuiScaledWidth() / 2 - 10;
+			int by = 15;
+			if (config.isWAILAEnabled) {
+				graphics.text(font, block, bx, by, colors.white);
+				graphics.fakeItem(fakeItem, bx - 20, by - 5);
+			}
+
+			// durability hud
+			if (config.isDurabilityHudEnabled) {
+				int dtX = 30;
+				int dtY = client.getWindow().getGuiScaledHeight() - 110;
+				int diX = 10;
+				int diY = client.getWindow().getGuiScaledHeight() - 115;
+				ItemStack helmet = client.player.getInventory().getItem(39);
+				if (!helmet.isEmpty()) {
+					graphics.fakeItem(helmet, diX, diY);
+					int durability = helmet.getMaxDamage() - helmet.getDamageValue();
+					if (durability >= helmet.getMaxDamage() / 2) {
+						graphics.text(font, String.valueOf(durability), dtX, dtY, colors.green);
+					} else if (durability < helmet.getMaxDamage() / 2) {
+						graphics.text(font, String.valueOf(durability), dtX, dtY, colors.red);
+					}
+				}
+
+				ItemStack chestplate = client.player.getInventory().getItem(38);
+				if (!chestplate.isEmpty()) {
+					graphics.fakeItem(chestplate, diX, diY + 20);
+					int durability = chestplate.getMaxDamage() - chestplate.getDamageValue();
+					if (durability >= chestplate.getMaxDamage() / 2) {
+						graphics.text(font, String.valueOf(durability), dtX, dtY + 20, colors.green);
+					} else if (durability < chestplate.getMaxDamage() / 2) {
+						graphics.text(font, String.valueOf(durability), dtX, dtY + 20, colors.red);
+					}
+				}
+
+				ItemStack leggings = client.player.getInventory().getItem(37);
+				if (!leggings.isEmpty()) {
+					graphics.fakeItem(leggings, diX, diY + 40);
+					int durability = leggings.getMaxDamage() - leggings.getDamageValue();
+					if (durability >= leggings.getMaxDamage() / 2) {
+						graphics.text(font, String.valueOf(durability), dtX, dtY + 40, colors.green);
+					} else if (durability < leggings.getMaxDamage() / 2) {
+						graphics.text(font, String.valueOf(durability), dtX, dtY + 40, colors.red);
+					}
+				}
+
+				ItemStack boots = client.player.getInventory().getItem(36);
+				if (!boots.isEmpty()) {
+					graphics.fakeItem(boots, diX, diY + 60);
+					int durability = boots.getMaxDamage() - boots.getDamageValue();
+					if (durability >= boots.getMaxDamage() / 2) {
+						graphics.text(font, String.valueOf(durability), dtX, dtY + 60, colors.green);
+					} else if (durability < boots.getMaxDamage() / 2) {
+						graphics.text(font, String.valueOf(durability), dtX, dtY + 60, colors.red);
+					}
+				}
+
+				ItemStack mainHand = client.player.getMainHandItem();
+				if (!mainHand.isEmpty()) {
+					graphics.fakeItem(mainHand, diX, diY + 80);
+					if (mainHand.isDamageableItem()) {
+						int durability = mainHand.getMaxDamage() - mainHand.getDamageValue();
+						if (durability >= mainHand.getMaxDamage() / 2) {
+							graphics.text(font, String.valueOf(durability), dtX, dtY + 80, colors.green);
+						} else if (durability < mainHand.getMaxDamage() / 2) {
+							graphics.text(font, String.valueOf(durability), dtX, dtY + 80, colors.red);
+						}
+					} else {
+						String itemString = mainHand.getCount() + "/" + mainHand.getMaxStackSize();
+						graphics.text(font, itemString, dtX, dtY + 80, colors.white);
+					}
+				}
+
+				ItemStack offHand = client.player.getOffhandItem();
+				if (!offHand.isEmpty()) {
+					graphics.fakeItem(offHand, diX, diY + 100);
+					if (offHand.isDamageableItem()) {
+						int durability = offHand.getMaxDamage() - offHand.getDamageValue();
+						if (durability >= offHand.getMaxDamage() / 2) {
+							graphics.text(font, String.valueOf(durability), dtX, dtY + 100, colors.green);
+						} else if (durability < offHand.getMaxDamage() / 2) {
+							graphics.text(font, String.valueOf(durability), dtX, dtY + 100, colors.red);
+						}
+					} else {
+						String itemString = offHand.getCount() + "/" + offHand.getMaxStackSize();
+						graphics.text(font, itemString, dtX, dtY + 80, colors.white);
+					}
+				}
 			}
 		}
 	}

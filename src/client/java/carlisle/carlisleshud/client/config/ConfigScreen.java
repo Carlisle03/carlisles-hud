@@ -35,6 +35,11 @@ public class ConfigScreen {
                 .setSaveConsumer(newValue -> CarlislesHudClient.config.is12HourFormat = newValue)
                 .build());
 
+        general.addEntry(entryBuilder.startBooleanToggle(Component.translatable("option.carlisleshud.isDurabilityHudEnabled"), CarlislesHudClient.config.isDurabilityHudEnabled)
+                .setDefaultValue(true)
+                .setSaveConsumer(newValue -> CarlislesHudClient.config.isDurabilityHudEnabled = newValue)
+                .build());
+
         builder.setSavingRunnable(() -> {
             CarlislesHudClient.saveConfig();
         });

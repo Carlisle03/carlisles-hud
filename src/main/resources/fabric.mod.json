@@ -3,9 +3,9 @@
 	"id": "carlisles-hud",
 	"version": "${version}",
 	"name": "carlisle's Hud",
-	"description": "recreates the hud that you usually see in mc clients",
+	"description": "Add's a HUD with useful info in it.",
 	"authors": [
-		"Carlisle!"
+		"Carlisle Nicholas P. Delos Reyes"
 	],
 	"contact": {
 		"homepage": "https://carlisle03.github.io/",
@@ -30,9 +30,10 @@
 		"carlisles-hud.client.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.19.5",
+		"fabricloader": ">=0.20.0",
 		"minecraft": ">=26.2",
 		"java": ">=25",
-		"fabric-api": "*"
+		"fabric-api": "*",
+		"cloth-config-api": "*"
 	}
 }
