@@ -9,8 +9,8 @@ public class MsptCalculator {
     public static double getMspt() {
         Minecraft client = Minecraft.getInstance();
         MinecraftServer server = client.getSingleplayerServer();
-        long[] ticks = server.getTickTimesNanos();
-        if (ticks != null) {
+        if (server != null) {
+            long[] ticks = server.getTickTimesNanos();
             return Arrays.stream(ticks).average().orElse(0) * 1.0E-6D;
         }
         return 0;
